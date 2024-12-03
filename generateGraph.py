@@ -4,11 +4,10 @@ import matplotlib.ticker as mticker
 import json
 import matplotlib.patches as mpatches
 import matplotlib
+import textwrap
 
 from CsvParser import ExcelParser
 
-def add_linebreaks(label, char_limit):
-    return '\n'.join([label[i:i+char_limit] for i in range(0, len(label), char_limit)])
 
 
 with open("config.json", "r") as file:
@@ -48,7 +47,7 @@ for i, ax in enumerate(axes):
     ax.set_xlabel('')
     ax.set_title("")
     ax.set_axisbelow(True)
-    ax.set_ylabel(add_linebreaks(data.index[i],config["charlimit"]), rotation = 0,labelpad = 5, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
+    ax.set_ylabel(textwrap.fill(data.index[i],config["charlimit"]), rotation = 0,labelpad = 5, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
 
 
 plt.tick_params(labelcolor="black", bottom=False, left=False)
