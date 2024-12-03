@@ -1,13 +1,14 @@
 {
     "figsize_x": 20,
     "figsize_multy": 1,
-    "fontsize bar percents": 11,
-    "charlimit" : 100,
-    "filepath": "testdata.xlsx",
-    "fontsize items": 15,
+    "fontsize bar percents": 14,
+    "charlimit" : 60,
+    "filepath": "Folie_12.xlsx",
+    "fontsize items": 20,
     "color1": "#A6A6A6",
     "color2": "#FF94DB",
     "color3": "#961551",
     "color4": "#F5C342",
-    "font": "Calibri"
+    "font": "Calibri",
+    "dpi": 600
 }
