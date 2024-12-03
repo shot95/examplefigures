@@ -25,7 +25,8 @@ data = parser.load_sheet(0)
 matplotlib.rc('font', family=config["font"])
 colors = [config["color1"], config["color2"], config["color3"], config["color4"]]
 
-fig, axes = plt.subplots(ncols = 1, nrows = data.index.size,constrained_layout = True, figsize = (config["figsize_x"],config["figsize_multy"]*len(data.index)))
+fig, axes = plt.subplots(ncols = 1, nrows = data.index.size,constrained_layout = True, figsize = (config["figsize_x"],config["figsize_multy"]*len(data.index)),sharex=True)
+
 
 for i, ax in enumerate(axes):
     sns.barplot(data.loc[data.index[i]], orient='h', edgecolor="white", width=1, ax = axes[i])
@@ -41,12 +42,13 @@ for i, ax in enumerate(axes):
                     fontsize=config["fontsize bar percents"], color='black',  # Font size and color
                     xytext=(5, 0),  # Offset the text to the right
                     textcoords='offset points')
+    ax.tick_params(axis='x', which='both', length=0)
     ax.set_yticks([])
-    ax.set_xticks([])
+    ax.grid(True,linestyle='-', linewidth=1, color='grey', alpha=0.1)
     ax.set_xlabel('')
     ax.set_title("")
     ax.set_axisbelow(True)
-    ax.set_ylabel(add_linebreaks(data.index[i],config["charlimit"]), rotation = 0,labelpad = 0, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
+    ax.set_ylabel(add_linebreaks(data.index[i],config["charlimit"]), rotation = 0,labelpad = 5, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
 
 
 plt.tick_params(labelcolor="black", bottom=False, left=False)
