@@ -7,11 +7,14 @@ import matplotlib
 
 from CsvParser import ExcelParser
 
+def add_linebreaks(label, char_limit):
+    return '\n'.join([label[i:i+char_limit] for i in range(0, len(label), char_limit)])
+
 
 with open("config.json", "r") as file:
     config = json.load(file)
 
-parser = ExcelParser('testdata.xlsx')
+parser = ExcelParser(config["filepath"])
 
 # Load the Excel file
 parser.load_excel()
@@ -21,7 +24,8 @@ data = parser.load_sheet(0)
 
 matplotlib.rc('font', family=config["font"])
 colors = [config["color1"], config["color2"], config["color3"], config["color4"]]
-fig, axes = plt.subplots(ncols = 1, nrows = data.index.size)
+
+fig, axes = plt.subplots(ncols = 1, nrows = data.index.size,constrained_layout = True, figsize = (config["figsize_x"],config["figsize_multy"]*len(data.index)))
 
 for i, ax in enumerate(axes):
     sns.barplot(data.loc[data.index[i]], orient='h', edgecolor="white", width=1, ax = axes[i])
@@ -42,21 +46,19 @@ for i, ax in enumerate(axes):
     ax.set_xlabel('')
     ax.set_title("")
     ax.set_axisbelow(True)
-    ax.set_ylabel(data.index[i], rotation = 0,labelpad = 0, ha = 'right',fontsize = config["fontsize items"])
+    ax.set_ylabel(add_linebreaks(data.index[i],config["charlimit"]), rotation = 0,labelpad = 0, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
 
 
-fig.add_subplot(111, frameon=False, zorder = 0)
 plt.tick_params(labelcolor="black", bottom=False, left=False)
 plt.xticks([0,0.25,0.50,0.75,1], fontsize = 12)
 plt.gca().xaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, symbol=" %"))  # xmax=1 means values are in the range [0, 1]
 plt.grid(True, linestyle='-', linewidth=1, color='grey', alpha=0.1)
-plt.tight_layout()
 plt.yticks([])
 custom_patch1 = mpatches.Patch(color=colors[0], label=data.columns[0])
 custom_patch2 = mpatches.Patch(color=colors[1], label=data.columns[1])
 custom_patch3 = mpatches.Patch(color=colors[2], label=data.columns[2])
 custom_patch4 = mpatches.Patch(color=colors[3], label=data.columns[3])
-plt.legend(handles=[custom_patch1, custom_patch2,custom_patch3,custom_patch4], loc = "lower center",ncol = 4,  bbox_to_anchor=(0.5, -0.1), fontsize = 14)
+plt.legend(handles=[custom_patch1, custom_patch2,custom_patch3,custom_patch4], loc = "lower center",ncol = 4,  bbox_to_anchor=(0.5, -1), fontsize = 14)
 plt.show()
 
 

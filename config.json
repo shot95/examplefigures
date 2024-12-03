@@ -1,5 +1,9 @@
 {
-    "fontsize bar percents": 12,
+    "figsize_x": 15,
+    "figsize_multy": 1,
+    "fontsize bar percents": 11,
+    "charlimit" : 100,
+    "filepath": "testdata.xlsx",
     "fontsize items": 12,
     "color1": "#A6A6A6",
     "color2": "#FF94DB",
