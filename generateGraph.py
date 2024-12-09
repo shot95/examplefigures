@@ -7,6 +7,7 @@ import matplotlib
 import textwrap
 from pathlib import Path
 import os
+import gc
 
 from CsvParser import ExcelParser
 file_extension = '.xlsx'
@@ -49,7 +50,7 @@ for file_path in directory.glob(f'*{file_extension}'):
         ax.set_xlabel('')
         ax.set_title("")
         ax.set_axisbelow(True)
-        ax.set_ylabel(textwrap.fill(data.index[i],config["charlimit"]), rotation = 0,labelpad = 5, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline")
+        ax.set_ylabel(textwrap.fill(data.index[i],config["charlimit"]), rotation = 0,labelpad = 5, ha = 'right',fontsize = config["fontsize items"], va = "center_baseline", weight = "bold")
 
 
     plt.tick_params(labelcolor="black", bottom=False, left=False)
@@ -57,12 +58,15 @@ for file_path in directory.glob(f'*{file_extension}'):
     plt.gca().xaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, symbol=" %"))  # xmax=1 means values are in the range [0, 1]
     plt.grid(True, linestyle='-', linewidth=1, color='grey', alpha=0.1)
     plt.yticks([])
-    custom_patch1 = mpatches.Patch(color=colors[0], label=data.columns[0])
-    custom_patch2 = mpatches.Patch(color=colors[1], label=data.columns[1])
-    custom_patch3 = mpatches.Patch(color=colors[2], label=data.columns[2])
-    custom_patch4 = mpatches.Patch(color=colors[3], label=data.columns[3])
-    plt.legend(handles=[custom_patch1, custom_patch2,custom_patch3,custom_patch4], loc = "lower center",ncol = 4,  bbox_to_anchor=(-0.01, -1), fontsize = 14)
+    custom_patch_list = []
+    for i,column in enumerate(data.columns):
+        custom_patch = mpatches.Patch(color=colors[i], label=column)
+        custom_patch_list.append(custom_patch)
+    plt.legend(handles=custom_patch_list, loc = "lower center",ncol = 4,  bbox_to_anchor=(-0.01, -1), fontsize = 14)
     plt.savefig("abbildungen/" + str(file_path)+".jpg",dpi = config["dpi"])
+    plt.close()  # Close the current figure
+    plt.close('all')
+    file.close()
 
 
 
